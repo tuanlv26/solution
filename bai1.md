@@ -1,14 +1,17 @@
-# 1. Rủi ro
-## - 2 web-server chưa rõ đã chạy load-balance chưa
-## - 1 server DB thiếu tính sẵn sàng khi có vấn đề và cũng như khi lượng khách hàng tăng, 1 server không chia tải sẽ khó đáp ứng nhu cầu.
-## - Việc backup thủ công hàng tuần sẽ có rủi ro quên do chủ quan và khi cần restore thì dữ liệu đó so với dữ liệu đang chạy sẽ chênh lệch khá nhiều
-# 2. Đề xuất cải tiến
-## - Thêm 1 server chỉ để chạy Haproxy phục vụ việc load-balance cho cả web-server và DB. Việc thêm server chạy Haproxy không cần tốn quá nhiều resource do Haproxy cũng không đòi hỏi quá nhiều tài nguyên. Viếc dùng 1 server chạy Haproxy cũng dễ dàng cho việc sau này scale thêm instance web-server hay của DB thì thay đổi config tại Haproxy cũng rất nhanh.
-## - Thêm 2 server mysql nữa, cài galera để tạo thành một cụm mysql-server, vừa đảm bảo tính sẵn sàng khi có server bị lỗi cũng như setup galera cũng đơn dễ dàng.
-## - Việc NAS-server đã dùng 70% thì cần thực hiện các việc:
-#### + Xóa các snapshot quá cũ hoặc không dùng tới
-#### + Thực hiện đặt job chạy backup tự động(chạy ban đêm là thời điểm ít khách hàng nhất), để tiết kiệm thì ưu tiên backup 1 server mysql là đủ, webserver có thể cân nhắc. Viết thêm script xóa các bản backup cũ quá 1 ngày đi để tiết kiệm không gian lưu trữ.
-#### + Nếu có thể thì có thể triển khai cache cho NAS server nếu muốn tăng tốc độ đọc/ghi(không quá ưu tiên).
-## - Với mạng 100Mbps cũng đủ dữ liệu
-# 3. Mô hình đề xuất theo cải tiến ở mục 2
-![alt text](bai2.drawio.png)
+# 1. Tổng quan:
+### - Như đề bài đề ra thì sẽ cần kết nối mạng cho khoảng 500 thiết bị mạng tại văn phòng.
+# 2. Đề xuất thiết bị, tài nguyên
+### - Ít nhất 2 đường internet của 2 ISP khác nhau
+### - 1 router biên được cấu hình BGP để nhận 2 đường internet
+### - 1 router VPN(có thể dùng draytek hoặc mikrotik)
+### - 2 switch core
+### - 2 router(mua thêm 1-2 router để dự phòng)
+### - 4 switch access
+### - 16 access point
+### - 9 wifi mesh
+# 3. Triển khai
+### - Chia tất cả 4 VLAN với subnet mask /24, 2 VLAN cho mạng dây, 2 VLAN cho riêng hệ thống wifi
+### - chia 2 switch core để đi mạng đều cho 2 khu vực của sàn, lấy mốc từ X5 để chia thành 2 khu chính
+### - mỗi switch core đi xuống router chính. Từ router chính cắm xuống 4 switch access .
+### - 4 switch access chia đều 2 khu vực như ở trên đã nói, 16 access point sẽ cũng chia đều đặt tại các điểm giao của Y2' với X2 tới X9 và Y2 với X2 tới X9. 
+### - Với wifi mesh thì root node đặt khu vực trực kỹ thuật, 8 wifi mesh còn lại thì đặt dọc, chia đều trên trục Y2' hoặc Y2.
