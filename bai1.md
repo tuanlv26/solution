@@ -9,3 +9,6 @@
 #### + Xóa các snapshot quá cũ hoặc không dùng tới
 #### + Thực hiện đặt job chạy backup tự động(chạy ban đêm là thời điểm ít khách hàng nhất), để tiết kiệm thì ưu tiên backup 1 server mysql là đủ, webserver có thể cân nhắc. Viết thêm script xóa các bản backup cũ quá 1 ngày đi để tiết kiệm không gian lưu trữ.
 #### + Nếu có thể thì có thể triển khai cache cho NAS server nếu muốn tăng tốc độ đọc/ghi(không quá ưu tiên).
+## - Với mạng 100Mbps cũng đủ dữ liệu
+# 3. Mô hình đề xuất theo cải tiến ở mục 2
+![alt text](bai2.drawio.png)
